@@ -16,10 +16,14 @@ COPY ./requirements.txt /code/requirements.txt
 # but that's not the case when working with containers.
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
+RUN pip install mysql-connector-python
+
 # Copy the ./app directory inside the /code directory.
 # As this has all the code which is what changes most frequently the Docker cache won't be used for this or any following steps easily.
 # So, it's important to put this near the end of the Dockerfile, to optimize the container image build times.
 COPY ./app /code/app
+
+COPY ./.env /code/.env
 
 # Set the command to run the uvicorn server.
 # This command will be run from the current working directory, the same /code directory you set above with WORKDIR /code.
